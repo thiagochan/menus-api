@@ -72,4 +72,15 @@ public class ProjectController {
         Project updated = projectMapper.convert(dto, project);
         return ResponseEntity.ok(projectService.save(updated));
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteProject(@PathVariable Long id) {
+        Project project = projectService.getProjectById(id);
+        if (project == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        projectService.delete(project);
+        return ResponseEntity.noContent().build();
+    }
 }
