@@ -22,4 +22,7 @@ public class ProjectService {
     public Project save(Project project) {
         return projectRepository.save(project);
     }
+    public List<Project> getByUserId(Long userId) {
+        return projectRepository.findByUserId(userId);
+    }
 }

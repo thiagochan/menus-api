@@ -8,6 +8,7 @@ import menus.com.menus.project.service.ProjectMapper;
 import menus.com.menus.project.service.ProjectService;
 import menus.com.menus.user.domain.entities.Users;
 import menus.com.menus.user.service.UsersService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,11 +32,21 @@ public class ProjectController {
         dto.setCreatedAt(LocalDateTime.now());
         Project project = projectMapper.convert(dto, user);
 
-        return ResponseEntity.ok(projectService.save(project));
+        return new ResponseEntity<>(projectService.save(project), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<?> getAllProjects() {
         return ResponseEntity.ok(projectService.getAllProjects());
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getProjectByUserId(@PathVariable Long id) {
+        Users user = usersService.findBy(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(projectService.getByUserId(user.getId()));
     }
 }
