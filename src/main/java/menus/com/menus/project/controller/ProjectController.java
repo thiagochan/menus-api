@@ -3,6 +3,7 @@ package menus.com.menus.project.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import menus.com.menus.project.domain.dtos.ProjectCreateForm;
+import menus.com.menus.project.domain.dtos.ProjectDTO;
 import menus.com.menus.project.domain.dtos.ProjectUpdateForm;
 import menus.com.menus.project.domain.entities.Project;
 import menus.com.menus.project.repository.ProjectRepository;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/project")
@@ -25,7 +27,7 @@ public class ProjectController {
     private final ProjectMapper projectMapper;
 
     @PostMapping
-    public ResponseEntity<?> createProject(@RequestBody ProjectCreateForm dto) {
+    public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectCreateForm dto) {
         Users user = usersService.findBy(dto.getUserId());
         if (user == null) {
             return ResponseEntity.notFound().build();
@@ -34,47 +36,47 @@ public class ProjectController {
         dto.setCreatedAt(LocalDateTime.now());
         Project project = projectMapper.convert(dto, user);
 
-        return new ResponseEntity<>(projectService.save(project), HttpStatus.CREATED);
+        return new ResponseEntity<>(projectMapper.convert(projectService.save(project)), HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getProject(@PathVariable Long id) {
+    public ResponseEntity<ProjectDTO> getProject(@PathVariable Long id) {
         Project project = projectService.getProjectById(id);
         if (project == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return new ResponseEntity<>(project, HttpStatus.OK);
+        return new ResponseEntity<>(projectMapper.convert(projectService.getProjectById(id)), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllProjects() {
-        return ResponseEntity.ok(projectService.getAllProjects());
+    public ResponseEntity<List<ProjectDTO>> getAllProjects() {
+        return ResponseEntity.ok(projectMapper.convert(projectService.getAllProjects()));
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<?> getProjectByUserId(@PathVariable Long id) {
+    public ResponseEntity<List<ProjectDTO>> getProjectsByUserId(@PathVariable Long id) {
         Users user = usersService.findBy(id);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(projectService.getByUserId(user.getId()));
+        return ResponseEntity.ok(projectMapper.convert(projectService.getByUserId(user.getId())));
     }
 
     @PutMapping
-    public ResponseEntity<?> updateProject(@Valid @RequestBody ProjectUpdateForm dto) {
+    public ResponseEntity<ProjectDTO> updateProject(@Valid @RequestBody ProjectUpdateForm dto) {
         Project project = projectService.getProjectById(dto.getId());
         if (project == null) {
             return ResponseEntity.notFound().build();
         }
 
         Project updated = projectMapper.convert(dto, project);
-        return ResponseEntity.ok(projectService.save(updated));
+        return ResponseEntity.ok(projectMapper.convert(projectService.save(updated)));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteProject(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
         Project project = projectService.getProjectById(id);
         if (project == null) {
             return ResponseEntity.notFound().build();
