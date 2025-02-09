@@ -37,6 +37,16 @@ public class ProjectController {
         return new ResponseEntity<>(projectService.save(project), HttpStatus.CREATED);
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<?> getProject(@PathVariable Long id) {
+        Project project = projectService.getProjectById(id);
+        if (project == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return new ResponseEntity<>(project, HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<?> getAllProjects() {
         return ResponseEntity.ok(projectService.getAllProjects());
