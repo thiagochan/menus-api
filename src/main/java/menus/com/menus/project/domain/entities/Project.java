@@ -1,6 +1,5 @@
 package menus.com.menus.project.domain.entities;
 
-import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +9,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
 import java.security.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Entity
@@ -20,7 +20,7 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Timestamp created;
+    private LocalDateTime createdAt;
     @ManyToOne
     private Users user;
 
