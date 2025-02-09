@@ -1,6 +1,7 @@
 package menus.com.menus.project.domain.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import menus.com.menus.user.domain.entities.Users;
@@ -27,5 +28,6 @@ public class Project {
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private Map<String, Object> page;
+    @NotNull
     private String name;
 }

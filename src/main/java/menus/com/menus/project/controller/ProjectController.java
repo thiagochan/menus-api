@@ -1,7 +1,9 @@
 package menus.com.menus.project.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import menus.com.menus.project.domain.dtos.ProjectCreateForm;
+import menus.com.menus.project.domain.dtos.ProjectUpdateForm;
 import menus.com.menus.project.domain.entities.Project;
 import menus.com.menus.project.repository.ProjectRepository;
 import menus.com.menus.project.service.ProjectMapper;
@@ -48,5 +50,16 @@ public class ProjectController {
         }
 
         return ResponseEntity.ok(projectService.getByUserId(user.getId()));
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateProject(@Valid @RequestBody ProjectUpdateForm dto) {
+        Project project = projectService.getProjectById(dto.getId());
+        if (project == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Project updated = projectMapper.convert(dto, project);
+        return ResponseEntity.ok(projectService.save(updated));
     }
 }
