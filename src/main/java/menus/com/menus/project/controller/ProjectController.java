@@ -6,7 +6,6 @@ import menus.com.menus.project.domain.dtos.ProjectCreateForm;
 import menus.com.menus.project.domain.dtos.ProjectDTO;
 import menus.com.menus.project.domain.dtos.ProjectUpdateForm;
 import menus.com.menus.project.domain.entities.Project;
-import menus.com.menus.project.repository.ProjectRepository;
 import menus.com.menus.project.service.ProjectMapper;
 import menus.com.menus.project.service.ProjectService;
 import menus.com.menus.user.domain.entities.Users;
