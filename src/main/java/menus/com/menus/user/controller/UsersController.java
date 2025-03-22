@@ -1,6 +1,7 @@
 package menus.com.menus.user.controller;
 
 import lombok.RequiredArgsConstructor;
+import menus.com.menus.jwt.dto.TokenDTO;
 import menus.com.menus.user.domain.dtos.UserCreateForm;
 
 import menus.com.menus.user.domain.dtos.UserLoginForm;
@@ -33,18 +34,15 @@ public class UsersController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginForm form) {
+    public ResponseEntity<TokenDTO> login(@RequestBody UserLoginForm form) {
         Users userToLogin = usersService.getUserByEmail(form.getEmail());
 
         if (userToLogin == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        String formHash = usersService.passwordHash(form.getPassword());
-        if (!formHash.equals(userToLogin.getPassword())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Senha inválida");
-        }
-
-        return ResponseEntity.ok().build();
+        TokenDTO tokenDTO = new TokenDTO();
+        tokenDTO.setToken(usersService.authenticateUser(form));
+        return ResponseEntity.ok(tokenDTO);
     }
 }

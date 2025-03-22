@@ -40,7 +40,7 @@ public class ProjectController {
         return new ResponseEntity<>(projectMapper.convert(projectService.save(project)), HttpStatus.CREATED);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ProjectDTO> getProject(@PathVariable Long id) {
         Project project = projectService.getProjectById(id);
         if (project == null) {
