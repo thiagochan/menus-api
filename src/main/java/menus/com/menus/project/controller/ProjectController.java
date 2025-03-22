@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/project")
 @RequiredArgsConstructor
+@CrossOrigin(maxAge = 3600)
 public class ProjectController {
     private final ProjectService projectService;
     private final UsersService usersService;

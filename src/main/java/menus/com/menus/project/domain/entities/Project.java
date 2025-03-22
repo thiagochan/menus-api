@@ -30,4 +30,6 @@ public class Project {
     private Map<String, Object> page;
     @NotNull
     private String name;
+    @NotNull
+    Boolean ready = Boolean.FALSE;
 }
