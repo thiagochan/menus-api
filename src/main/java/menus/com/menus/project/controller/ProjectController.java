@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import menus.com.menus.project.domain.dtos.ProjectCreateForm;
 import menus.com.menus.project.domain.dtos.ProjectDTO;
+import menus.com.menus.project.domain.dtos.ProjectPublishForm;
 import menus.com.menus.project.domain.dtos.ProjectUpdateForm;
 import menus.com.menus.project.domain.entities.Project;
 import menus.com.menus.project.service.ProjectMapper;
@@ -84,5 +85,24 @@ public class ProjectController {
 
         projectService.delete(project);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/publish")
+    public ResponseEntity<String> publish(@RequestBody ProjectPublishForm dto) {
+        Project projectSameDomain = projectService.findByDomainName(dto.getDomainName());
+        if (projectSameDomain != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Já existe estabelecimento com esse nome");
+        }
+
+        Project projectToPublish = projectService.getProjectById(dto.getId());
+        if (projectToPublish == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Projeto não encontrado");
+        }
+
+        projectToPublish.setReady(true);
+        projectToPublish.setDomainName(dto.getDomainName());
+        projectService.save(projectToPublish);
+
+        return ResponseEntity.ok("Projeto publicado");
     }
 }

@@ -31,4 +31,7 @@ public class ProjectService {
     public List<Project> getByUserId(Long userId) {
         return projectRepository.findByUserId(userId);
     }
+    public Project findByDomainName(String domainName) {
+        return projectRepository.findByDomainName(domainName).orElse(null);
+    }
 }

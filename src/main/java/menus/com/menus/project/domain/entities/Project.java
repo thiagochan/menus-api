@@ -31,5 +31,6 @@ public class Project {
     @NotNull
     private String name;
     @NotNull
-    Boolean ready = Boolean.FALSE;
+    private Boolean ready = Boolean.FALSE;
+    private String domainName;
 }
