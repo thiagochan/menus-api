@@ -32,7 +32,7 @@ public class UsersController {
         return new ResponseEntity<>("Usuário criado com sucesso", HttpStatus.CREATED);
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserLoginForm form) {
         Users userToLogin = usersService.getUserByEmail(form.getEmail());
 
