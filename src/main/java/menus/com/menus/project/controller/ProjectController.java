@@ -105,4 +105,19 @@ public class ProjectController {
 
         return ResponseEntity.ok("Projeto publicado");
     }
+
+    @GetMapping("/domain/{domainName}")
+    public ResponseEntity<ProjectDTO> acessRestaurant(@PathVariable String domainName) {
+        Project projectToShow = projectService.findByDomainName(domainName);
+        if (projectToShow == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        if (projectToShow.getReady()) {
+            return ResponseEntity.ok(projectMapper.convert(projectToShow));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }
