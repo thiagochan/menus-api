@@ -27,6 +27,10 @@ public class UsersService {
         return DigestUtils.md5DigestAsHex(password.getBytes());
     }
 
+    public Users getUserByEmail(String email) {
+        return usersRepository.findByEmail(email).orElse(null);
+    }
+
     public List<Users> findAll() {
         return usersRepository.findAll();
     }
