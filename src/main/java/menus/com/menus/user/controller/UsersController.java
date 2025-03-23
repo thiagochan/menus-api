@@ -6,6 +6,7 @@ import menus.com.menus.user.domain.dtos.UserCreateForm;
 
 import menus.com.menus.user.domain.dtos.UserLoginForm;
 import menus.com.menus.user.domain.entities.Users;
+import menus.com.menus.user.service.RoleService;
 import menus.com.menus.user.service.UsersMapper;
 import menus.com.menus.user.service.UsersService;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(maxAge = 3600)
 public class UsersController {
     private final UsersService usersService;
+    private final RoleService roleService;
     private final UsersMapper usersMapper;
 
     @PostMapping
@@ -28,7 +30,7 @@ public class UsersController {
         }
 
         String hash = usersService.passwordHash(form.getPassword());
-        Users userToSave = usersMapper.convert(form, hash);
+        Users userToSave = usersMapper.convert(form, hash, roleService.getDefault());
         usersService.save(userToSave);
         return new ResponseEntity<>("Usuário criado com sucesso", HttpStatus.CREATED);
     }
