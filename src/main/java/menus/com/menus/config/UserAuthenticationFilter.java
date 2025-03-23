@@ -30,12 +30,10 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // Verifica se o endpoint requer autenticação antes de processar a requisição
         String path = request.getRequestURI();
-        if (path.equals("/users/login")) { // Permite o acesso ao login sem filtro
+        if (path.contains("swagger") || path.contains("v3")) { // Permite o acesso ao swagger sem filtro
             filterChain.doFilter(request, response);
             return;
         } // Continua o processamento da requisição
-
-        System.out.println("ASIUDASBFUDSHFAFAJFOAS");
 
         if (checkIfEndpointIsNotPublic(request)) {
             String token = recoveryToken(request); // Recupera o token do cabeçalho Authorization da requisição
