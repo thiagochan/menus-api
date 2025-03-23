@@ -2,6 +2,7 @@ package menus.com.menus.project.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import menus.com.menus.jwt.service.JwtTokenService;
 import menus.com.menus.project.domain.dtos.ProjectCreateForm;
 import menus.com.menus.project.domain.dtos.ProjectDTO;
 import menus.com.menus.project.domain.dtos.ProjectPublishForm;
@@ -23,13 +24,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(maxAge = 3600)
 public class ProjectController {
+    private final JwtTokenService jwtTokenService;
     private final ProjectService projectService;
     private final UsersService usersService;
     private final ProjectMapper projectMapper;
 
     @PostMapping
     public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectCreateForm dto) {
-        Users user = usersService.findBy(dto.getUserId());
+        String email = jwtTokenService.getSubjectFromToken(dto.getToken());
+        Users user = usersService.findUserByEmail(email);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
@@ -55,9 +58,10 @@ public class ProjectController {
         return ResponseEntity.ok(projectMapper.convert(projectService.getAllProjects()));
     }
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<List<ProjectDTO>> getProjectsByUserId(@PathVariable Long id) {
-        Users user = usersService.findBy(id);
+    @GetMapping("/user/{token}")
+    public ResponseEntity<List<ProjectDTO>> getProjectsByUserId(@PathVariable String token) {
+        String email = jwtTokenService.getSubjectFromToken(token);
+        Users user = usersService.findUserByEmail(email);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }

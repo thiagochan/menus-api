@@ -24,7 +24,7 @@ public class UsersController {
 
     @PostMapping
     public ResponseEntity<String> create(@RequestBody UserCreateForm form) {
-        Users hasUser = usersService.getUserByEmail(form.getEmail());
+        Users hasUser = usersService.findUserByEmail(form.getEmail());
         if (hasUser != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("E-mail já existente");
         }
@@ -37,7 +37,7 @@ public class UsersController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenDTO> login(@RequestBody UserLoginForm form) {
-        Users userToLogin = usersService.getUserByEmail(form.getEmail());
+        Users userToLogin = usersService.findUserByEmail(form.getEmail());
 
         if (userToLogin == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

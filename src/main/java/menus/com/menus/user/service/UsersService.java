@@ -37,7 +37,7 @@ public class UsersService {
         return securityConfiguration.passwordEncoder().encode(password);
     }
 
-    public Users getUserByEmail(String email) {
+    public Users findUserByEmail(String email) {
         return usersRepository.findByEmail(email).orElse(null);
     }
 

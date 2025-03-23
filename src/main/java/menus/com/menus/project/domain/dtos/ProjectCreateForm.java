@@ -11,7 +11,7 @@ import java.util.Map;
 @Setter
 public class ProjectCreateForm {
     private String name;
-    private Long userId;
+    private String token;
     private LocalDateTime createdAt;
     private Map<String, Object> page;
 }
