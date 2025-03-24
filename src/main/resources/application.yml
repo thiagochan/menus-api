@@ -8,3 +8,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         ddl-auto: update
 
+cors:
+  allowedOrigins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+

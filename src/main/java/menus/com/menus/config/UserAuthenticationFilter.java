@@ -9,6 +9,7 @@ import menus.com.menus.jwt.service.JwtTokenService;
 import menus.com.menus.user.domain.entities.UserDetailsImpl;
 import menus.com.menus.user.domain.entities.Users;
 import menus.com.menus.user.repository.UsersRepository;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

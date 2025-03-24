@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/project")
 @RequiredArgsConstructor
-@CrossOrigin(maxAge = 3600, origins = "http://localhost:5173")
+@CrossOrigin(maxAge = 3600)
 public class ProjectController {
     private final JwtTokenService jwtTokenService;
     private final ProjectService projectService;
