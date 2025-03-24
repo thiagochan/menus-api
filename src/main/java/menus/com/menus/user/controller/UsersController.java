@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-@CrossOrigin(maxAge = 3600)
+@CrossOrigin(maxAge = 3600, origins = "http://localhost:5173")
 public class UsersController {
     private final UsersService usersService;
     private final RoleService roleService;
